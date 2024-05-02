@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invio dati via POST</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+
+    <h1>Inserisci i numeri:</h1>
+    <textarea id="numbersInput" rows="4" cols="50"></textarea>
+    <br>
+    <button onclick="sendNumbers()">Invia Numeri</button>
+    
+    <button onclick="openAllLinks()">Clicca tutti</button>
+
+    <h2>Risultato:</h2>
+    <div id="result"></div>
+
+
+    <script>
+        function sendNumbers() {
+            var numbersInput = document.getElementById("numbersInput").value;
+            var numbersArray = numbersInput.split("\n").map(Number);
+
+            // Effettua la richiesta POST per ogni numero
+            numbersArray.forEach(function(number) {
+                $.post("https://www.iperceramica.it/SearchComponentAutoSuggestView?langId=-4&storeId=10151&catalogId=10051&term="+number+"&showHeader=true", { numero: number }, function(result) {
+                    // Aggiorna la visualizzazione del risultato
+                    $("#result").append("<p>Risultato per il numero " + number + ": " + result + "</p>");
+                });
+            });
+        }
+
+        function openAllLinks() {
+            // Seleziona tutti i link nella pagina
+            var links = document.querySelectorAll('a');
+
+            // Apri ogni link in una nuova tab
+            links.forEach(function(link) {
+                window.open(link.href, '_blank');
+            });
+        }
+    </script>
+
+</body>
+</html>
